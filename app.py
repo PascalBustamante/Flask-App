@@ -14,7 +14,7 @@ def get_access_token():
     access_token = response.json()["access_token"]
     return access_token
 
-def get_german_shepherds(access_token):
+def get_dog_breeds(access_token):
     url = "https://api.petfinder.com/v2/types/dog/breeds"
     headers = {"Authorization": f"Bearer {access_token}"}
     response = requests.get(url, headers=headers)
@@ -28,11 +28,11 @@ def get_german_shepherds(access_token):
 def index():
     return render_template('index.html')
 
-@app.route("/german-shepherds")
-def german_shepherds():
+@app.route("/dog/breeds)
+def dog_breeds():
     access_token = get_access_token()
-    dogs = get_german_shepherds(access_token)
-    return {"dogs": dogs}
+    dogs = get_dog_breeds(access_token)
+    return render_template('test.html')
 
 
 if __name__ == '__main__':
