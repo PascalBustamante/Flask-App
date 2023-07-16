@@ -28,7 +28,7 @@ def get_dog_breeds(access_token):
 def index():
     return render_template('index.html')
 
-@app.route("/dog/breeds)
+@app.route("/dog/breeds")
 def dog_breeds():
     access_token = get_access_token()
     dogs = get_dog_breeds(access_token)
