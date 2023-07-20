@@ -1,4 +1,4 @@
-from flask import Flask, session, redirect, url_for, request, render_template
+from flask import Flask, session, redirect, url_for, request, render_template,jsonify
 import requests
 
 app = Flask(__name__)
@@ -19,10 +19,13 @@ def get_dog_breeds(access_token):
     headers = {"Authorization": f"Bearer {access_token}"}
     response = requests.get(url, headers=headers)
     data = response.json()
-    breeds = data["breeds"]
+    _breeds = data["breeds"]
+    breed = []
 
+    for x in _breeds:
+        breed.append(x["name"])
 
-    return breeds
+    return breed
 
 @app.route('/')
 def index():
@@ -32,8 +35,7 @@ def index():
 def dog_breeds():
     access_token = get_access_token()
     dogs = get_dog_breeds(access_token)
-    return render_template('test.html')
-
+    return render_template('test.html', content=['1','2'])
 
 if __name__ == '__main__':
     app.run(debug=True)

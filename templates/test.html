@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>German Shepherds</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/german-shepherds">German Shepherds</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section>
-        <h1>German Shepherds</h1>
-        <p>Learn more about German Shepherds and their characteristics.</p>
-        <!-- Additional content specific to German Shepherds -->
-    </section>
-    <footer>
-        <p>&copy; 2022 My Cool Flask App. All rights reserved.</p>
-    </footer>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+{% extends "base.html" %}
+{%block title%} Test  {%endblock%}
+ {%block content%}
+ <h1>yo</h1>
+ {%endblock%}
