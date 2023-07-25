@@ -1,1 +1,6 @@
 *.log
+*.db
+instance/
+.vscode/
+.venv/
+.flaskenv
