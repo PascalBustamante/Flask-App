@@ -1,6 +1,6 @@
 *.log
 *.db
-instance/
+instance
 .vscode/
-.venv/
-.flaskenv
+.venv
+*.flaskenv
