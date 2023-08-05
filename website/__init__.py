@@ -2,6 +2,7 @@ from flask import Flask
 from os import path
 from flask_login import LoginManager
 from .database.models import db
+#from ..config import Config_dev  ##maybe move config file to same directory?
 
 
 
@@ -16,9 +17,11 @@ def create_app():
 
     from .general.views import views
     from .auth.auth import auth
+    from .api.api import api_petfinder
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/auth')
+    #app.register_blueprint(api_petfinder, url_prefix='/')
 
     from .database.models import User
     

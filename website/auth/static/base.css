@@ -1,0 +1,134 @@
+@import url("htts://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 25px 12.5%;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    height: 100px;
+}
+
+body {
+    background: #efd6c6;
+}
+
+.navbar a {
+    position: relative;
+    font-size: 16px;
+    color: #94a78f;
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 30px;
+
+}
+
+.navbar a::after {
+    content: '';
+    /* position: absolute;
+    left: 0;
+    bottom: -6px; */
+    width: 100%;
+    height: 2px;
+    background: #94a78f;
+    border-radius: 5px;
+    transform: translateY(10px);
+    opacity: 0;
+    transition: .5s;
+}
+
+.navbar a:hover::after {
+    transform: translateY(0);
+    opacity: 1 ;
+}
+
+.search-bar {
+    width: 250px;
+    height: 45px;
+    background: transparent;
+    border: 2px solid #94a78f;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #94a78f;
+    padding-left: 10px;
+}
+
+.search-bar input::placeholder {
+    color: #b1c2a9;
+}
+
+.search-bar button {
+    width: 40px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.search-bar button i {
+    font-size: 22px;
+    color: #94a78f;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    align-content: space-around;
+    width: 75%;
+    height: 550px;
+    background: url('img.jpg') no-repeat;
+}
+
+.container .content {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 58%;
+    height: 100%;
+    background: yellowgreen;
+}
+
+.container .logreg-box {
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 42%;
+    height: 100%;
+    background: red;
+}
+
+
+
+

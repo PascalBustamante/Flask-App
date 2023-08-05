@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
 
-auth = Blueprint('auth', __name__, template_folder='templates')
+auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -31,7 +31,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('auth.login-test'))
 
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
