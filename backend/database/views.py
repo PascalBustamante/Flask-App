@@ -3,7 +3,7 @@ from .models import db, Event
 
 database_bp = Blueprint('database_bp',__name__)
 
-def format_event(event):
+def format_event(event): ##for easy frontend use
     return {
         "descrition": event.description,
         "id": event.id,
