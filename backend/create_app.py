@@ -18,12 +18,13 @@ def create_app():
     from general.views import views
     from auth.auth import auth
     from api.api import api_petfinder
+    from database.views import database
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/auth')
+    app.register_blueprint(database, url_prefix='/')
     #app.register_blueprint(api_petfinder, url_prefix='/')
 
-    
     with app.app_context():
         db.create_all()
 
@@ -36,9 +37,3 @@ def create_app():
         return User.query.get(int(id))
 
     return app
-
-
-def create_database(app):
-    if not path.exists('website/' + DB_NAME):
-        db.create_all(app=app)
-        print('Created Database!')

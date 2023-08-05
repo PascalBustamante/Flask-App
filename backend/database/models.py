@@ -22,11 +22,16 @@ class User(db.Model, UserMixin):
 class Event(db.Model):
     id =db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(100), nullable=False)
-    creared_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
         return f'Event: {self.description}'
     
     def __init__(self,description):
         self.description = description
+
+    def update_description(self, new_description):
+        self.description = new_description
+
+        db.session.commit()
 
