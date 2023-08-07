@@ -1,28 +1,29 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for, session,flash
 from database.models import User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
 
+jwt = JWTManager()
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        email = request.form.get('email', None)
+        password = request.form.get('password', None)
 
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                access_token = create_access_token(identity=email)
+                return jsonify(access_token=access_token)
             else:
-                flash('Incorrect password, try again.', category='error')
+                return jsonify({'msg': 'Incorrect email or password, try again.'}), 401
         else:
-            flash('Email does not exist.', category='error')
+            return jsonify({'msg': 'Incorrect email or password, try again.'}), 401
 
     return render_template("login.html", user=current_user)
 
