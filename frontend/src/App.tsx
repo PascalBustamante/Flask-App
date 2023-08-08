@@ -1,17 +1,10 @@
 import ListGroup from "./components/ListGroup";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-  let items = ["Houston", "Paris", "Austin", "San Antonio", "Santo Domingo", "San Salvador"] 
-  
-  const handleSelectItem = (item: string) => {
-    console.log(item);
-  }
-  
-  return (
-    <div>
-      <ListGroup items={items} heading="Cities" onSelectItem={handleSelectItem}/>
-    </div>
-  );
+  return <Routes>
+    <Route path="/" element={<h1>HI</h1>} />
+    <Route />
+  </Routes>
 }
-
 export default App;

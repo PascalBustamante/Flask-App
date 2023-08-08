@@ -2,30 +2,43 @@ from flask import Blueprint, render_template, request, jsonify, redirect, url_fo
 from database.models import User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
 
-jwt = JWTManager()
 
-@auth.route('/login', methods=['GET', 'POST'])
+
+
+@auth.route('/login', methods=['POST'])
+
 def login():
-    if request.method == 'POST':
-        email = request.form.get('email', None)
-        password = request.form.get('password', None)
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    if email != "test" or password != "test":
+        return jsonify({"msg": "Bad username or password"},email), 401
 
-        user = User.query.filter_by(email=email).first()
-        if user:
-            if check_password_hash(user.password, password):
-                access_token = create_access_token(identity=email)
-                return jsonify(access_token=access_token)
-            else:
-                return jsonify({'msg': 'Incorrect email or password, try again.'}), 401
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
+
+'''
+def login():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    #user = User.query.filter_by(email=email).first()
+    
+    if email == "test":
+        access_token = create_access_token(identity=email)
+        return jsonify(access_token=access_token)
+
+     if check_password_hash(user.password, password):
+            access_token = create_access_token(identity=email)
+            return jsonify(access_token=access_token)
         else:
             return jsonify({'msg': 'Incorrect email or password, try again.'}), 401
-
-    return render_template("login.html", user=current_user)
+    else:
+        return jsonify({'msg': 'Incorrect email or password, try again.'}), 401'''
 
 
 @auth.route('/logout')

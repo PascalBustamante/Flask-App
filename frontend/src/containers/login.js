@@ -30,7 +30,7 @@ export const Login = () => {
         <div>
             <input type="text" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             <input type="text" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={() => }> Login</button>
+            <button> Login</button>
         </div>
     </div>
 }
