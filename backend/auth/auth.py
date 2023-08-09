@@ -48,8 +48,8 @@ def logout():
     return redirect(url_for('auth.login-test'))
 
 
-@auth.route('/sign-up', methods=['GET', 'POST'])
-def sign_up():
+@auth.route('/registration', methods=['GET', 'POST'])
+def registration():
     if request.method == 'POST':
         email = request.form.get('email')
         username = request.form.get('username')

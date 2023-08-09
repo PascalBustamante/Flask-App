@@ -3,7 +3,6 @@ import "./Card.css"
 
 interface CardProps {
     apiUrl: string;
-    showShador?: boolean;
 }
 
 const Card: React.FC = () => {
