@@ -6,9 +6,10 @@ interface ApiResponse {
 }
 
 export interface UserRegistrationData {
-  username: string;
+  //Susername: string;
   email: string;
   password: string;
+  confirmPassword: string;
   // Other user data properties
 }
 

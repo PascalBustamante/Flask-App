@@ -8,9 +8,10 @@ function RegistrationComponent() {
     event.preventDefault();
 
     const userData: UserRegistrationData = {
-      username: 'exampleuser',
+      //username: 'exampleuser',
       email: 'user@example.com',
       password: 'securepassword',
+      confirmPassword: 'confirmpassword',
       // Other user data
     };
 

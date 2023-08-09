@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flask_bcrypt import Bcrypt
 from os import path
 from flask_login import LoginManager
 from database.models import db, User, Event
@@ -17,6 +18,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:BraianNico11@localhost/PetApp'
     db.init_app(app)
     jwt = JWTManager(app)
+    bcrypt = Bcrypt(app)
 
     from general.views import views
     from auth.auth import auth 
