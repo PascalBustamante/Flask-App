@@ -76,6 +76,18 @@ def registration():
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+
+    user = User.query.filter_by(email=email).first()
+
+    if user is None:  #this si for debug
+        return jsonify({
+            "error": "User does not exist."
+        })
+    
+    if check_password_hash(user.password, password):
+        access_token = create_access_token(identity=email)
+        return jsonify(access_token=access_token)        
+
     if email != "test" or password != "test":
         return jsonify({"msg": "Bad username or password"},email), 401
 
