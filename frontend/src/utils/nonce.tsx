@@ -1,24 +1,39 @@
-import crypto from 'crypto';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { SHA256, enc } from 'crypto-js';
 
-interface NonceGeneratorHook {
-  nonce: string;
-  generateNewNonce: () => void;
-}
+const useNonce = (sizeInBytes: number = 12) => {
+  const [nonce, setNonce] = useState<string>('');
 
-const useNonceGenerator = (sizeInBytes = 12): NonceGeneratorHook => {
-  const [nonce, setNonce] = useState<string>(generateNonce(sizeInBytes));
+  useEffect(() => {
+    // Generate a new nonce when the component mounts
+    generateNonce(sizeInBytes);
+  }, []);
 
-  const generateNewNonce = useCallback((): void => {
-    setNonce(generateNonce(sizeInBytes));
-  }, [sizeInBytes]);
+  const generateNonce = (size: number) => {
+    const nonceBytes = generateRandomBytes(size);
+    const newNonce = bytesToHex(nonceBytes); // Convert nonceBytes to a hexadecimal string
+    setNonce(newNonce);
+  };
 
-  return { nonce, generateNewNonce };
+  const generateRandomBytes = (sizeInBytes: number) => {
+    const randomBytes = new Uint8Array(sizeInBytes);
+    for (let i = 0; i < sizeInBytes; i++) {
+      randomBytes[i] = Math.floor(Math.random() * 256);
+    }
+    return randomBytes;
+  };
+
+  const bytesToHex = (bytes: Uint8Array) => {
+    return Array.from(bytes)
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
+  };
+
+  const regenerateNonce = () => {
+    generateNonce(sizeInBytes);
+  };
+
+  return { nonce, regenerateNonce };
 };
 
-const generateNonce = (sizeInBytes: number): string => {
-  const nonceBytes = crypto.randomBytes(sizeInBytes);
-  return nonceBytes.toString('hex');
-};
-
-export default useNonceGenerator;
+export default useNonce;

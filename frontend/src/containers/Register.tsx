@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./reg.css"
-import useNonceGenerator from '../utils/nonce';
+import useNonce from '../utils/nonce';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,14}$/;
 const USER_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,14}$/;
@@ -9,7 +9,7 @@ const Register = () => {
     const userRef = useRef<HTMLInputElement | null>(null);
     const errRef = useRef<HTMLInputElement | null>(null);
 
-    const { nonce, generateNewNonce } = useNonceGenerator();
+    const { nonce, regenerateNonce } = useNonce();
 
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);  
@@ -76,8 +76,9 @@ const Register = () => {
                 nonce: nonce,
             })
         }
-        
-        console.log(user,pwd,nonce)
+        console.log(user,pwd,nonce);
+        regenerateNonce();
+
     }
 
     return (
