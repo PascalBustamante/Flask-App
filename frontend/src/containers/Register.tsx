@@ -75,8 +75,9 @@ const Register = () => {
                 'password': pwd,
                 nonce: nonce,
             })
-            console.log(user,pwd,nonce)
         }
+        
+        console.log(user,pwd,nonce)
     }
 
     return (
