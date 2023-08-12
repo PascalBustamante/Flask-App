@@ -1,20 +1,24 @@
-import crypto from "crypto"
-import { useCallback, useState } from "react"
+import crypto from 'crypto';
+import { useCallback, useState } from 'react';
 
+interface NonceGeneratorHook {
+  nonce: string;
+  generateNewNonce: () => void;
+}
 
+const useNonceGenerator = (sizeInBytes = 12): NonceGeneratorHook => {
+  const [nonce, setNonce] = useState<string>(generateNonce(sizeInBytes));
 
-const useNonceGenerator = (sizeInBytes = 12) => {
-    const [nonce, setNonce] = useState(generateNonce(sizeInBytes));
+  const generateNewNonce = useCallback((): void => {
+    setNonce(generateNonce(sizeInBytes));
+  }, [sizeInBytes]);
 
-    const generateNewNonce = useCallback(() => {
-        setNonce(generateNewNonce(sizeInBytes));
-    }, [sizeInBytes]);
-    return { nonce, generateNewNonce };
+  return { nonce, generateNewNonce };
 };
 
-const generateNonce = (sizeInBytes) => {
-    const nonceBytes = crypto.randomBytes(sizeInBytes);
-    return nonceBytes.toString('hex');
+const generateNonce = (sizeInBytes: number): string => {
+  const nonceBytes = crypto.randomBytes(sizeInBytes);
+  return nonceBytes.toString('hex');
 };
 
 export default useNonceGenerator;

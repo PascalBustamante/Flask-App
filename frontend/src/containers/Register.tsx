@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./reg.css"
+import useNonceGenerator from '../utils/nonce';
+
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,14}$/;
 const USER_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,14}$/;
 
 const Register = () => {
     const userRef = useRef<HTMLInputElement | null>(null);
     const errRef = useRef<HTMLInputElement | null>(null);
+
+    const { nonce, generateNewNonce } = useNonceGenerator();
 
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);  
@@ -48,7 +52,7 @@ const Register = () => {
         setErrMsg('');
     }, [user, pwd, matchPwd])
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    /*const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         //extra protection step
         const v1 = USER_REGEX.test(user);
@@ -60,7 +64,20 @@ const Register = () => {
         console.log(user, pwd);
         setSuccess(true);
     }
+*/
 
+    const handleSubmit =async (e: React.FormEvent) => {
+        const requestOptions = {
+            methods: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                'username': user,
+                'password': pwd,
+                nonce: nonce,
+            })
+            console.log(user,pwd,nonce)
+        }
+    }
 
     return (
         <>
@@ -96,7 +113,7 @@ const Register = () => {
                     </p>
 
                 <label htmlFor="password">
-                Password:
+                    Password:
                 <span className={validPwd ? "valid" : "hide"}>
                     <i>&#10003;</i>
                 </span>
@@ -120,7 +137,7 @@ const Register = () => {
                     </p>
 
                 <label htmlFor="confirm_pwd">
-                Confirm Password:
+                    Confirm Password:
                 <span className={validMatch && matchPwd ? "valid" : "hide"}>
                     <i>&#10003;</i>
                 </span>
