@@ -1,19 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./reg.css"
-import useNonce from '../utils/nonce';
+import useSubmit from "../utils/useSubmit";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,14}$/;
-const USER_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,14}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 
 const Register = () => {
-    const userRef = useRef<HTMLInputElement | null>(null);
+    const { response, error, isLoading, performSubmit } = useSubmit();
+
+    const emailRef = useRef<HTMLInputElement | null>(null);
     const errRef = useRef<HTMLInputElement | null>(null);
 
-    const { nonce, regenerateNonce } = useNonce();
-
-    const [user, setUser] = useState('');
+    const [email, setemail] = useState('');
     const [validName, setValidName] = useState(false);  
-    const [userFocus, setUserFocus] = useState(false);
+    const [emailFocus, setemailFocus] = useState(false);
 
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
@@ -27,17 +28,17 @@ const Register = () => {
     const [success, setSuccess] = useState(Boolean);
 
     useEffect(() => {
-        if (userRef.current) { 
-            userRef.current.focus();
+        if (emailRef.current) { 
+            emailRef.current.focus();
         }
     }, [])
 
     useEffect(() => {
-        const result = USER_REGEX.test(user);
+        const result = EMAIL_REGEX.test(email);
         console.log(result);
-        console.log(user);
+        console.log(email);
         setValidName(result);
-    }, [user])
+    }, [email])
 
     useEffect(() => {
         const result = PWD_REGEX.test(pwd);
@@ -50,35 +51,29 @@ const Register = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd, matchPwd])
+    }, [email, pwd, matchPwd])
 
     /*const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         //extra protection step
-        const v1 = USER_REGEX.test(user);
+        const v1 = email_REGEX.test(email);
         const v2 = PWD_REGEX.test(pwd);
         if (!v1 || !v2) {
             setErrMsg("Invaild Entry");
             return;
         }
-        console.log(user, pwd);
+        console.log(email, pwd);
         setSuccess(true);
     }
 */
 
-    const handleSubmit =async (e: React.FormEvent) => {
-        const requestOptions = {
-            methods: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                'username': user,
-                'password': pwd,
-                nonce: nonce,
-            })
-        }
-        console.log(user,pwd,nonce);
-        regenerateNonce();
-
+    const handleSubmit =async (e: React.FormEvent): Promise<void> => {
+        e.preventDefault;
+        const formData = {
+            'email': email,
+            'password': pwd
+        };
+        await performSubmit('http://localhost:5000/', 'POST', formData);
     }
 
     return (
@@ -95,22 +90,22 @@ const Register = () => {
             <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">{errMsg}</p>
             <h1>Register</h1>
             <form>
-                <label htmlFor="username">
-                    Username:
+                <label htmlFor="email">
+                    email:
                 </label>
                 <input  
                     type="text"
-                    id="username"
-                    ref={userRef}
+                    id="emailname"
+                    ref={emailRef}
                     autoComplete="off"
-                    onChange={(e) => setUser(e.target.value)}
+                    onChange={(e) => setemail(e.target.value)}
                     required
                     aria-invalid={validName ? "false" : "true"}
                     aria-describedby="uidnote"
-                    onFocus={() => setUserFocus(true)}
-                    onBlur={() => setUserFocus(false)}
+                    onFocus={() => setemailFocus(true)}
+                    onBlur={() => setemailFocus(false)}
                     />
-                    <p id="'uidnote" className={userFocus && user && !validName ? "instruction" : "offscreen"}>
+                    <p id="'uidnote" className={emailFocus && email && !validName ? "instruction" : "offscreen"}>
                         stufffffff
                     </p>
 

@@ -52,8 +52,9 @@ def logout():
 @auth.route('/registration', methods=['POST'])
 def registration():
     if request.method == 'POST':
-        email = request.form.get('email')
+        nuser = request.get_json()
         ##username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password') 
         #confirm_password = request.form.get('confirm-password') #this can be handled by the frontend
 

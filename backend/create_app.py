@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from os import path
 from flask_login import LoginManager
 from database.models import db, User, Event
+from flask_cors import CORS
 #from ..config import Config_dev  ##maybe move config file to same directory?
 
 
@@ -13,12 +14,14 @@ DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)  #This is needed to Cross Origin Resource Sharing
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config["JWT_SECRET_KEY"] = "super-secret" 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:BraianNico11@localhost/PetApp'
     db.init_app(app)
     jwt = JWTManager(app)
     bcrypt = Bcrypt(app)
+
 
     from general.views import views
     from auth.auth import auth 
