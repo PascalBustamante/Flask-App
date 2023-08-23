@@ -15,19 +15,20 @@ def logout():
 @auth.route('/registration', methods=['POST'])
 def registration():
     if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        password = request.form.get('password') 
+        data = request.json
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password') 
 
         user_exists = User.query.filter_by(email=email).first() is not None
 
         if user_exists:
             return jsonify({'error': 'Email already exists'}), 409
         
-        hashed_password = generate_password_hash(password=password)
+        hashed_password = generate_password_hash(password=password).decode('utf-8','ignore')
         new_user = User(email=email, username=username, password=hashed_password, role='user')
-        db.add(new_user)
-        db.commit() 
+        db.session.add(new_user)
+        db.session.commit() 
         
         return jsonify({
             'id': new_user.id,
