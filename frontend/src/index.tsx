@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 //import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
-import './index.css'
+import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Login from './containers/Login';
+import Register from './containers/Register';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +14,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <Routes>
+        <Route index element={<App/>}/>
+        <Route path='login' element={<Login/>} />
+        <Route path='register' element={<Register/>} />
+      </Routes>
     </Router>
   </React.StrictMode>
 );

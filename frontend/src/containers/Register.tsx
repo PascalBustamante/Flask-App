@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./reg.css"
+import "./reg.css";
 import useSubmit from "../utils/useSubmit";
 import { url } from "inspector";
 
@@ -79,6 +79,7 @@ const Register = () => {
             'password': pwd
         };
         await performSubmit('http://127.0.0.1:5000/auth/registration', 'POST', formData);
+        console.log(formData);
     }
 
     return (
