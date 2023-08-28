@@ -7,11 +7,6 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
 
-@auth.route('/logout')
-def logout():
-    return redirect(url_for('auth.login-test'))
-
-
 @auth.route('/registration', methods=['POST'])
 def registration():
     if request.method == 'POST':
@@ -44,7 +39,7 @@ def login():
 
     user = User.query.filter_by(email=email).first()
 
-    if user is None:  #this si for debug
+    if user is None:  
         return jsonify({
             "error": "User does not exist."
         })
@@ -55,6 +50,3 @@ def login():
 
     if email != "test" or password != "test":
         return jsonify({"msg": "Bad username or password"},email), 401
-
-    access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token)

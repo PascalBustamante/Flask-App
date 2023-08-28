@@ -23,7 +23,7 @@ def create_app():
     bcrypt = Bcrypt(app)
     migrate = Migrate(app, db)
 
-    from .general.views import views
+    from .utils.datetime_util import views
     from .auth.auth import auth 
     from .api.api import api_petfinder
     from .database.views import database
