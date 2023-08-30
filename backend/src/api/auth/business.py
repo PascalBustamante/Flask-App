@@ -4,8 +4,8 @@ from http import HTTPStatus
 from flask import current_app, jsonify
 from flask_restx import abort
 
-from ...database.models import db
-from ...database.models.user import User
+from models.models_old import db
+from models.user import User
 
 
 def process_registration_request(email, password):

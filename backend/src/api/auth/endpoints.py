@@ -3,8 +3,8 @@ from http import HTTPStatus
 
 from flask_restx import Namespace, Resource
 
-from .dto import auth_reqparser
-from .business import process_registration_request
+from src.api.auth.dto import auth_reqparser
+from src.api.auth.business import process_registration_request
 
 auth_ns = Namespace(name="auth", validate=True)
 

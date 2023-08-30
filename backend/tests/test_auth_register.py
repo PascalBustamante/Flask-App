@@ -1,8 +1,14 @@
 """Unit tests for api.auth_register API endpoint."""
+import os
+import sys
+topdir = os.path.join(os.path.dirname(__file__), "..")
+sys.path.append(topdir)
+
 from http import HTTPStatus
 
-from ..src.database.models.user import User
+from src.models.user import User
 from tests.utils import EMAIL, PASSWORD, BAD_REQUEST, register_user
+import pytest
 
 SUCCESS = "successfully registered"
 EMAIL_ALREADY_EXISTS = f"{EMAIL} is already registered"

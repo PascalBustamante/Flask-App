@@ -5,21 +5,28 @@ from uuid import uuid4
 from flask import current_app
 import jwt
 from sqlalchemy.ext.hybrid import hybrid_property
-from ..models import db
-from flask_bcrypt import check_password_hash, generate_password_hash
 
-from ...utils.datetime_util import (
+# from .models_old import db
+from flask_bcrypt import check_password_hash, generate_password_hash
+from flask_sqlalchemy import SQLAlchemy
+
+
+from utils.datetime_util import (
     utc_now,
     get_local_utcoffset,
     make_tzaware,
     localized_dt_string,
 )
 
+db = SQLAlchemy()
+
 
 class User(db.Model):
     """User model for storing logon credentials and other details."""
 
-    __tablename__ = "cool_user" #simply because user is a reserved word in many SQL implementations
+    __tablename__ = (
+        "cool_user"  # simply because user is a reserved word in many SQL implementations
+    )
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(255), unique=True, nullable=False)

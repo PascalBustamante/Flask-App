@@ -1,9 +1,9 @@
 """Global pytest fixtures."""
 import pytest
 
-from ..create_app import create_app
-from ..database.models import db 
-from ..database.models.user import User
+from src.create_app import create_app
+from src.models.models_old import db
+from src.models.user import User
 from tests.utils import EMAIL, PASSWORD
 
 

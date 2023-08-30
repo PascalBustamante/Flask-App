@@ -10,26 +10,24 @@ APP_ROOT = Path(__file__).parent
 README = (APP_ROOT / "README.md").read_text()
 AUTHOR = "Aaron Luna"
 AUTHOR_EMAIL = "contact@aaronluna.dev"
-PROJECT_URLS = {
-    "Documentation": "https://aaronluna.dev/series/flask-api-tutorial/",
-    "Bug Tracker": "https://github.com/a-luna/flask-api-tutorial/issues",
-    "Source Code": "https://github.com/a-luna/flask-api-tutorial",
-}
+PROJECT_URLS = {}  # are all wrong
 INSTALL_REQUIRES = [
-    "Flask",
+    "Flask>=2.0",
     "Flask-Bcrypt",
     "Flask-Cors",
     "Flask-Migrate",
     "flask-restx",
-    "Flask-SQLAlchemy",
+    "Flask-SQLAlchemy>=3.0.2",
     "PyJWT",
     "python-dateutil",
     "python-dotenv",
     "requests",
     "urllib3",
-
-    "werkzeug==0.16.1",
-
+    "werkzeug>=2.0",
+    "MarkupSafe>=2.0.1",
+    "Jinja2>=3.0.3",
+    "flask_jwt_extended",
+    "psycopg2",
 ]
 EXTRAS_REQUIRE = {
     "dev": [
@@ -48,7 +46,7 @@ EXTRAS_REQUIRE = {
 }
 
 setup(
-    name="flask-api-tutorial",
+    name="CNN_DogBreedRecog_v1",
     description=DESCRIPTION,
     long_description=README,
     long_description_content_type="text/markdown",
@@ -58,7 +56,6 @@ setup(
     maintainer=AUTHOR,
     maintainer_email=AUTHOR_EMAIL,
     license="MIT",
-    url="https://github.com/a-luna/flask-api-tutorial",
     project_urls=PROJECT_URLS,
     packages=find_packages(where="src"),
     package_dir={"": "src"},

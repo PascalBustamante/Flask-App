@@ -1,14 +1,25 @@
-from flask import Flask, session, redirect, url_for, request, render_template,jsonify,Blueprint
+from flask import (
+    Flask,
+    session,
+    redirect,
+    url_for,
+    request,
+    render_template,
+    jsonify,
+    Blueprint,
+)
 import requests
-from .config import config_petfinder
+from config import config_petfinder
 
-api_petfinder = Blueprint('api_petfinder', __name__)
+api_petfinder = Blueprint("api_petfinder", __name__)
+
 
 def get_access_token():
-    config = [config_petfinder.token_url,config_petfinder.oauth_data]
+    config = [config_petfinder.token_url, config_petfinder.oauth_data]
     response = requests.post(url=config[0], data=config[1])
     access_token = response.json()["access_token"]
     return access_token
+
 
 def get_dog_breeds(access_token):
     url = "https://api.petfinder.com/v2/types/dog/breeds"
@@ -23,10 +34,12 @@ def get_dog_breeds(access_token):
 
     return breed
 
+
 def search_breeds(search):
     pass
 
-'''
+
+"""
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -46,4 +59,4 @@ def dog_breeds():
         return render_template('test.html', content=['1','2'])
 
 
-'''
+"""
