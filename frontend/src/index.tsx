@@ -5,6 +5,7 @@ import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import ProtectedRoute from './utils/protectedRoute';
 import Login from './containers/Login';
 import Register from './containers/Register';
 
@@ -18,6 +19,7 @@ root.render(
         <Route index element={<App/>}/>
         <Route path='login' element={<Login/>} />
         <Route path='register' element={<Register/>} />
+        <ProtectedRoute path='' element={} />
       </Routes>
     </Router>
   </React.StrictMode>

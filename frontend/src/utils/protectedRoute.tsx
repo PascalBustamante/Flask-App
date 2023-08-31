@@ -18,7 +18,7 @@ const ProtectedRoute = (props:any) => {
     return (
         <React.Fragment>
             {
-                isLoggedIn ? props.children : null
+                isLoggedIn ? {...props.children} : null
             }
         </React.Fragment>
     );

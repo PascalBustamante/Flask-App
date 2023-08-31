@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react"
 import "./Card.css"
 
 interface CardProps {
-    apiUrl: string;
+
 }
 
-const Card: React.FC = () => {
+const Card: React.FC = ({data}:any) => {
   return (
     <>
     <div className="card-container">
