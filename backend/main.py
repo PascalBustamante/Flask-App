@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from .src.create_app import create_app, db
+from src.create_app import create_app, db
 from src.models.user import User
 import os
 import sys

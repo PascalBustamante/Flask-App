@@ -1,6 +1,7 @@
 """Unit tests for api.auth_register API endpoint."""
 import os
 import sys
+
 topdir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(topdir)
 
@@ -8,7 +9,7 @@ from http import HTTPStatus
 
 from src.models.user import User
 from tests.utils import EMAIL, PASSWORD, BAD_REQUEST, register_user
-import pytest
+from tests.conftests import app, db
 
 SUCCESS = "successfully registered"
 EMAIL_ALREADY_EXISTS = f"{EMAIL} is already registered"
@@ -43,6 +44,7 @@ def test_auth_register_email_already_registered(client, db):
     assert "token_type" not in response.json
     assert "expires_in" not in response.json
     assert "access_token" not in response.json
+
 
 def test_auth_register_invalid_email(client):
     invalid_email = "first last"

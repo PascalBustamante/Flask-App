@@ -7,28 +7,19 @@ from src.models.user import User
 from tests.utils import EMAIL, PASSWORD
 
 
-@pytest.fixture
+@pytest.fixture()
 def app():
     app = create_app("testing")
-    return app
+    app.config.update({"TESTING": True})
+
+    yield app
 
 
-@pytest.fixture
-def db(app, client, request):
-    db.drop_all()
-    db.create_all()
-    db.session.commit()
-
-    def fin():
-        db.session.remove()
-
-    request.addfinalizer(fin)
-    return db
+@pytest.fixture()
+def client(app):
+    return app.test_client()
 
 
-@pytest.fixture
-def user(db):
-    user = User(email=EMAIL, password=PASSWORD)
-    db.session.add(user)
-    db.session.commit()
-    return user
+@pytest.fixture()
+def user():
+    user = User(email="test_email", username="test_username", password_hash="test_pwd")
