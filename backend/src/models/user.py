@@ -79,3 +79,14 @@ class User(db.Model):
         payload = dict(exp=expire, iat=now, sub=self.public_id, admin=self.admin)
         key = current_app.config.get("SECRET_KEY")
         return jwt.encode(payload, key, algorithm="HS256")
+
+    @staticmethod
+    def decode_access_token(access_token):
+        try:
+            key = current_app.config.get("SECRET_KEY")
+            payload = jwt.decode(access_token, key, algorithms=["HS256"])
+            return payload
+        except jwt.ExpiredSignatureError:
+            return "Signature expired. Please log in again."
+        except jwt.InvalidTokenError:
+            return "Invalid token. Please log in again."

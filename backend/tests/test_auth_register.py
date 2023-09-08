@@ -15,14 +15,32 @@ SUCCESS = "successfully registered"
 EMAIL_ALREADY_EXISTS = f"{EMAIL} is already registered"
 
 
+def assert_response(
+    response,
+    status_code,
+    message=None,
+    token_type=None,
+    expires_in=None,
+    access_token=None,
+):
+    assert response.status_code == status_code
+    if message:
+        assert "message" in response.json and response.json["message"] == message
+    if token_type:
+        assert (
+            "token_type" in response.json and response.json["token_type"] == token_type
+        )
+    if expires_in:
+        assert (
+            "expires_in" in response.json and response.json["expires_in"] == expires_in
+        )
+    if access_token:
+        assert "access_token" in response.json
+
+
 def test_auth_register(client, db):
     response = register_user(client)
-    assert response.status_code == HTTPStatus.CREATED
-    assert "status" in response.json and response.json["status"] == "success"
-    assert "message" in response.json and response.json["message"] == SUCCESS
-    assert "token_type" in response.json and response.json["token_type"] == "bearer"
-    assert "expires_in" in response.json and response.json["expires_in"] == 5
-    assert "access_token" in response.json
+    assert_response(response, HTTPStatus.CREATED, SUCCESS, "bearer", 5, True)
     access_token = response.json["access_token"]
     result = User.decode_access_token(access_token)
     assert result.success
@@ -37,23 +55,15 @@ def test_auth_register_email_already_registered(client, db):
     db.session.add(user)
     db.session.commit()
     response = register_user(client)
-    assert response.status_code == HTTPStatus.CONFLICT
-    assert (
-        "message" in response.json and response.json["message"] == EMAIL_ALREADY_EXISTS
+    assert_response(
+        response, HTTPStatus.CONFLICT, EMAIL_ALREADY_EXISTS, None, None, False
     )
-    assert "token_type" not in response.json
-    assert "expires_in" not in response.json
-    assert "access_token" not in response.json
 
 
 def test_auth_register_invalid_email(client):
     invalid_email = "first last"
     response = register_user(client, email=invalid_email)
-    assert response.status_code == HTTPStatus.BAD_REQUEST
-    assert "message" in response.json and response.json["message"] == BAD_REQUEST
-    assert "token_type" not in response.json
-    assert "expires_in" not in response.json
-    assert "access_token" not in response.json
+    assert_response(response, HTTPStatus.BAD_REQUEST, BAD_REQUEST, None, None, False)
     assert "errors" in response.json
     assert "password" not in response.json["errors"]
     assert "email" in response.json["errors"]
