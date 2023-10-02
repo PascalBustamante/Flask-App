@@ -2,9 +2,11 @@
 from http import HTTPStatus
 
 from flask_restx import Namespace, Resource
+from flask import current_app
 
 from api.auth.dto import auth_reqparser
 from api.auth.business import process_registration_request
+
 
 auth_ns = Namespace(name="auth", validate=True)
 
@@ -20,7 +22,11 @@ class RegisterUser(Resource):
     @auth_ns.response(int(HTTPStatus.INTERNAL_SERVER_ERROR), "Internal server error.")
     def post(self):
         """Register a new user and return an access token."""
+
+        db = current_app.db
+        print(current_app.db, db, "here")
         request_data = auth_reqparser.parse_args()
         email = request_data.get("email")
+        username = request_data.get("username")
         password = request_data.get("password")
-        return process_registration_request(email, password)
+        return process_registration_request(email, username, password)

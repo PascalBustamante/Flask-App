@@ -32,7 +32,7 @@ INSTALL_REQUIRES = [
 EXTRAS_REQUIRE = {
     "dev": [
         "black",
-        "flake8",
+        "flake8 < 3.8",
         "pre-commit",
         "pydocstyle",
         "pytest",

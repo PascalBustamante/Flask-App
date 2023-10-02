@@ -4,21 +4,26 @@ from http import HTTPStatus
 from flask import current_app, jsonify
 from flask_restx import abort
 
-from models.models_old import db
-from models.user import User
+from database.models.user import User
+from create_app import db_manager as db
 
 
-def process_registration_request(email, password):
-    if User.find_by_email(email):
+def process_registration_request(email, username, password):
+    db = current_app.db
+    if db.session.query(User).filter_by(email=email).first():
         abort(HTTPStatus.CONFLICT, f"{email} is already registered", status="fail")
-    new_user = User(email=email, password=password)
+
+    # if User.find_by_email(email):
+    #   abort(HTTPStatus.CONFLICT, f"{email} is already registered", status="fail")
+    new_user = User(email=email, username=username, password=password)
     db.session.add(new_user)
     db.session.commit()
     access_token = new_user.encode_access_token()
+    print(access_token)
     response = jsonify(
         status="success",
         message="successfully registered",
-        access_token=access_token.decode(),
+        access_token=access_token,
         token_type="bearer",
         expires_in=_get_token_expire_time(),
     )

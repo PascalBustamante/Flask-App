@@ -6,10 +6,21 @@ from flask import current_app
 import jwt
 from sqlalchemy.ext.hybrid import hybrid_property
 
-# from .models_old import db
 from flask_bcrypt import check_password_hash, generate_password_hash
-from flask_sqlalchemy import SQLAlchemy
 
+from sqlalchemy import (
+    Integer,
+    Column,
+    Text,
+    String,
+    Boolean,
+    DateTime,
+    ForeignKey,
+    func,
+)
+from sqlalchemy.orm import relationship, sessionmaker
+from create_app import db_manager
+from utils.result import Result
 
 from utils.datetime_util import (
     utc_now,
@@ -18,23 +29,26 @@ from utils.datetime_util import (
     localized_dt_string,
 )
 
-db = SQLAlchemy()
+
+Base = db_manager.base
 
 
-class User(db.Model):
+class User(Base):
     """User model for storing logon credentials and other details."""
 
     __tablename__ = (
         "cool_user"  # simply because user is a reserved word in many SQL implementations
     )
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    password_hash = db.Column(db.String(100), nullable=False)
-    registered_on = db.Column(db.DateTime, default=utc_now)
-    admin = db.Column(db.Boolean, default=False)
-    public_id = db.Column(db.String(36), unique=True, default=lambda: str(uuid4()))
+    __table_args__ = {"extend_existing": True}
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(255), unique=True, nullable=False)
+    username = Column(String(20), unique=True, nullable=False)
+    password_hash = Column(String(100), nullable=False)
+    registered_on = Column(DateTime, default=utc_now)
+    admin = Column(Boolean, default=False)
+    public_id = Column(String(36), unique=True, default=lambda: str(uuid4()))
 
     def __repr__(self):
         return (
@@ -63,6 +77,9 @@ class User(db.Model):
 
     @classmethod
     def find_by_email(cls, email):
+        db = current_app.db
+
+        print(db, db.session, "hereee")
         return cls.query.filter_by(email=email).first()
 
     @classmethod
@@ -82,11 +99,25 @@ class User(db.Model):
 
     @staticmethod
     def decode_access_token(access_token):
+        if isinstance(access_token, bytes):
+            access_token = access_token.decode("ascii")
+        if access_token.startswith("Bearer "):
+            split = access_token.split("Bearer")
+            access_token = split[1].strip()
         try:
             key = current_app.config.get("SECRET_KEY")
             payload = jwt.decode(access_token, key, algorithms=["HS256"])
-            return payload
         except jwt.ExpiredSignatureError:
-            return "Signature expired. Please log in again."
+            error = "Access token expired. Please log in again."
+            return Result.Fail(error)
         except jwt.InvalidTokenError:
-            return "Invalid token. Please log in again."
+            error = "Invalid token. Please log in again."
+            return Result.Fail(error)
+
+        user_dict = dict(
+            public_id=payload["sub"],
+            admin=payload["admin"],
+            token=access_token,
+            expires_at=payload["exp"],
+        )
+        return Result.Ok(user_dict)

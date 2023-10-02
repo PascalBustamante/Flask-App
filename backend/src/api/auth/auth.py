@@ -5,10 +5,13 @@ from flask import (
     jsonify,
     redirect,
     url_for,
-    session,
     flash,
+    current_app,
 )
-from models.models_old import User, db
+
+
+from database.models.user import User
+from create_app import db_manager as db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_bcrypt import generate_password_hash, check_password_hash
