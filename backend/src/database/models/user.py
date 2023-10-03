@@ -34,7 +34,7 @@ Base = db_manager.base
 
 
 class User(Base):
-    """User model for storing logon credentials and other details."""
+    """User model for storing login credentials and other details."""
 
     __tablename__ = (
         "cool_user"  # simply because user is a reserved word in many SQL implementations
